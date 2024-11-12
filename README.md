@@ -50,7 +50,56 @@ With an emphasis on trends and performance measures, this project compares and a
 
 ➢ **Data Loading** - Reputable public datasets and product specifications provided the data on different CPUs and GPUs, including characteristics like clock frequency, transistor count, process size, and year of introduction. Because the data is placed into a structured format, analysis and manipulation can be done quickly. Our Dataset is known as “CPU and GPU Performances Dataset”, which is publicly available on Kaggle.com website.  
 Here are some interesting facts supported by the data, which we will verify based on our insights- 
- 
+```python
+import re #The re library provides regular expression operations to search, match, and manipulate text patterns
+import numpy as np #numpy is a fundamental package for numerical computation, enabling efficient handling of arrays and matrices and performing mathematical operations on large datasets
+import pandas as pd #pandas is essential for data manipulation and analysis, providing structures like DataFrames and Series to organize, filter, aggregate, and transform datasets easily
+import matplotlib as mpl #matplotlib is a versatile plotting library used for creating static, interactive, and animated visualizations in Python
+import matplotlib.pyplot as plt #matplotlib.pyplot is a submodule that provides a MATLAB-like interface, making it easier to create basic charts and figures with functions for labeling
+import seaborn as sns #seaborn builds on matplotlib to simplify the creation of visually appealing statistical plots, offering tools for visualizing complex relationships and trends in data through various built-in themes
+import plotly.express as px #plotly.express is part of Plotly, providing a high-level interface for quickly creating interactive visualizations such as scatter plots, bar charts, and 3D plots, 
+import warnings 
+%matplotlib inline
+#This is a magic command in Jupyter notebooks that ensures all matplotlib plots are displayed directly within the notebook output cells rather than in separate windows.
+plt.style.use('ggplot')
+
+plt.rcParams['axes.titleweight']   = 'bold'
+plt.rcParams['axes.titlelocation'] = 'left'
+plt.rcParams['figure.titleweight'] = 'bold'
+plt.rcParams['legend.framealpha'] = 0.5
+plt.rcParams['legend.facecolor'] = 'white'
+plt.rcParams['axes.facecolor'] = '#DDDDFF'
+plt.rcParams['scatter.edgecolors'] = '#DDDDFF'
+
+pd.options.display.max_columns = 200
+df = pd.read_csv("chip_dataset.csv", index_col=0)
+df.info()
+#Loading and Quick Look at the data
+```
+```python
+#Output
+<class 'pandas.core.frame.DataFrame'>
+Index: 4854 entries, 0 to 4853
+Data columns (total 13 columns):
+ #   Column                 Non-Null Count  Dtype  
+---  ------                 --------------  -----  
+ 0   Product                4854 non-null   object 
+ 1   Type                   4854 non-null   object 
+ 2   Release Date           4854 non-null   object 
+ 3   Process Size (nm)      4845 non-null   float64
+ 4   TDP (W)                4228 non-null   float64
+ 5   Die Size (mm^2)        4139 non-null   float64
+ 6   Transistors (million)  4143 non-null   float64
+ 7   Freq (MHz)             4854 non-null   float64
+ 8   Foundry                4854 non-null   object 
+ 9   Vendor                 4854 non-null   object 
+ 10  FP16 GFLOPS            536 non-null    float64
+ 11  FP32 GFLOPS            1948 non-null   float64
+ 12  FP64 GFLOPS            1306 non-null   float64
+dtypes: float64(8), object(5)
+memory usage: 436.1+ KB
+```
+
 - Moore's Law still holds, especially in GPUs. 
 - Dannard Scaling is still valid in general. 
 - CPUs have higher frequencies, but GPUs are catching up. 
@@ -60,9 +109,42 @@ Here are some interesting facts supported by the data, which we will verify base
 
 ➢ **Data Preprocessing** - To guarantee consistency, the data is pre-processed after loading. After our initial look, we have seen a brief overview of our dataset and determined that we have around 4800+ rows of data and 14 columns as well as their respective data types. Right from the get-go, we can see "NaN" values under the FP16 GFLOPS, FP32 GFLOPS, and FP64 GFLOPS columns, hence we will drop those columns, and handle other missing data as well.
 
-Records lacking important information, such as the release date, are eliminated, and missing values in numerical fields such as transistor count, process size and die size are replaced with mean values. Change numerical attributes to the proper data types (floats 
-or integers) and date fields to datetime formats. Set release_date to datetime64, since it is being treated like an object, similarly set procss size to integer type.  
+```python
 
+# Number of missing values for each columns
+df.isna().sum()
+```
+```python
+#Output
+Product                     0
+Type                        0
+Release Date                0
+Process Size (nm)           9
+TDP (W)                   626
+Die Size (mm^2)           715
+Transistors (million)     711
+Freq (MHz)                  0
+Foundry                     0
+Vendor                      0
+FP16 GFLOPS              4318
+FP32 GFLOPS              2906
+FP64 GFLOPS              3548
+dtype: int64
+#We can notice a lot of "NaN" values in the last 3 columns, 'FP16 GFLOPS', 'FP32 GFLOPS', 'FP64 GFLOPS'
+```
+
+Records lacking important information, such as the release date, are eliminated, and missing values in numerical fields such as transistor count, process size and die size are replaced with mean values. Change numerical attributes to the proper data types (floats or integers) and date fields to datetime formats. Set release_date to datetime64, since it is being treated like an object, similarly set procss size to integer type.  
+```python
+#Filling up 2000+ entries through mean or mode values can made the overall data biased or shifted towards a region. It's better to delete these columns.
+df.drop(['FP16 GFLOPS','FP32 GFLOPS','FP64 GFLOPS'], axis=1, inplace=True)
+# Fill NaN values with mean in the remanining columns
+df.process_size_nm = df.process_size_nm.fillna(df.process_size_nm.dropna().mean())
+df.die_size_mm2 = df.die_size_mm2.fillna(df.die_size_mm2.dropna().mean())
+df.transistors_10e6 = df.transistors_10e6.fillna(df.transistors_10e6.dropna().mean())
+# set procss size to integer type
+df.process_size_nm = df.process_size_nm.astype(int)
+
+```
 <img src="https://github.com/user-attachments/assets/13fc142a-2862-4c62-a7be-bfa36bef3615" alt="image" width="600" height="450">
 
 **Fig-Flowchart depicting the program flow**
@@ -71,14 +153,92 @@ or integers) and date fields to datetime formats. Set release_date to datetime64
 - Dropping Duplicates and Outliers: Ensures uniqueness and accuracy. 
 - Filtering Irrelevant Data: This method focusses on the essential CPU and GPU features by eliminating data points that don't contribute to the research. 
 - Converting into categories: We can group data into categories such as Type(GPU or CPU) , Vendors( AMD, Intel, Nvidia etc.) based on extracted patterns from model names or other attributes, to help us in visualisation. 
+```python
+# Convert to categorical
+categories = {
+    'Vendor': ['AMD','Intel','Other','NVIDIA','ATI'],
+    'Type': ['CPU','GPU'],
+}
+for k,v in categories.items():
+    df[k] = pd.Categorical(df[k],categories=v,ordered=True)
+    
+df.info()
+```
+```python
+#Output
+<class 'pandas.core.frame.DataFrame'>
+Index: 4779 entries, 0 to 4853
+Data columns (total 14 columns):
+ #   Column            Non-Null Count  Dtype         
+---  ------            --------------  -----         
+ 0   model             4779 non-null   object        
+ 1   Type              4779 non-null   category      
+ 2   release_date      4779 non-null   datetime64[ns]
+ 3   process_size_nm   4779 non-null   int32         
+ 4   tdp_w             4162 non-null   float64       
+ 5   die_size_mm2      4779 non-null   float64       
+ 6   transistors_10e6  4779 non-null   float64       
+ 7   freq_mhz          4779 non-null   float64       
+ 8   Foundry           4779 non-null   object        
+ 9   Vendor            4779 non-null   category      
+ 10  FP16 GFLOPS       516 non-null    float64       
+ 11  FP32 GFLOPS       1898 non-null   float64       
+ 12  FP64 GFLOPS       1271 non-null   float64       
+ 13  rel_year          4779 non-null   int32         
+dtypes: category(2), datetime64[ns](1), float64(7), int32(2), object(2)
+memory usage: 420.2+ KB
 
+```
 ➢ **Exploratory Data Analysis (EDA)** – The EDA stage sheds light on important characteristics and patterns -
 - Scatter Plots: Analyze the relationship between variables like Process Size vs. Frequency and Die Size vs Transistors.
+```python
+fig = px.scatter(data_frame=df, y='process_size_nm', x='freq_mhz', color="Type", width=1050,height=500,title="Process Size(nm) vs Frequency(MHz)",trendline="ols")
+fig.update_xaxes(title_text="Frequency(MHz)")
+fig.update_yaxes(title_text="Process Size(nm)")
+fig.show()
+```
 - Bar Charts: Used to understand Foundry and Vendor distribution in the market. Also used to show counts or averages for frequencies, transistors and process size.
+```python
+values = df.Foundry.value_counts()
+names = values.index
+fig = px.bar(y=names, x=values, color=names)
+fig.update_layout({
+    'title' : {
+        'text': 'Foundry Distribution',
+        'x':0.5
+    }    
+})
+fig.update_xaxes(title_text="Count")
+fig.update_yaxes(title_text="Foundary")
+fig.show()
+```
 - Correlation Analysis: Use heatmaps to examine overall correlation and separate correlations within CPU and GPU parameters.
+ ```python
+correlation_matrix = df.corr(numeric_only=True)
+plt.figure(figsize=(6,5))
+sns.heatmap(correlation_matrix, annot=True, cmap='viridis')
+plt.title('Correlation Matrix')
+plt.xticks(rotation=90)
+plt.show()
+```
 - 3D Visualization: Visualize multi-variable relationships (e.g., process size, die size, transistor count) with 3D scatter plots.
+```python
+fig = px.scatter_3d(df, x='process_size_nm', y='die_size_mm2', z='transistors_10e6',
+              color='Vendor', width=1020,height=500)
+fig.update_layout(
+    scene=dict(
+        xaxis_title='Process Size (nm)',
+        yaxis_title='Die Size (mm²)',
+        zaxis_title='Transistors (Millions)'
+    )
+)
+fig.show()
+```
 - Box Plots – These give accurate lower, upper and average values of the feature under consideration.
-
+```python
+fig = px.box(data_frame=df, x='process_size_nm', color="Foundry", height=500,width=900,title="Process Size (nm) by Foundries")
+fig.show()
+```
 ➢ **Visualization** - Use libraries like Seaborn, Matplotlib, and Plotly for advanced visualizations, such as:  
 - Transistor Count vs. Release Year
 - Process Size vs. Release Year
