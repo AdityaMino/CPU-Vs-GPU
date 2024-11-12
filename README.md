@@ -162,6 +162,6 @@ There are various ways to broaden the examination of CPUs and GPUs:
 
 ## 📚References 
 
-1.	[GPU vs CPU Analysis on Kaggle](https://www.kaggle.com/code/shagundwi/gpu-vs-cpu)
+1.	[GPU vs CPU Analysis on Kaggle](https://www.kaggle.com/datasets/michaelbryantds/cpu-and-gpu-product-data/data)
 2.	Buber, Ebubekir & Diri, Banu. (2018). Performance Analysis and CPU vs GPU Comparison for Deep Learning. 1-6. 10.1109/CEIT.2018.8751930.
 3.	Gregg, Chris & Hazelwood, Kim. (2011). Where is the data? Why you cannot debate CPU vs. GPU performance without the answer. ISPASS 2011 - IEEE International Symposium on Performance Analysis of Systems and Software. 134-144. 10.1109/ISPASS.2011.5762730.
