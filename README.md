@@ -2,7 +2,7 @@
 [![JupyterLab](https://img.shields.io/badge/JupyterLab-E36209?style=for-the-badge&logo=jupyter&logoColor=white)](https://jupyter.org/)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-blue?style=for-the-badge&logo=plotly&logoColor=white)](https://matplotlib.org/)
 
-# CPU💻 Vs 🎮GPU - Exploratory Data Analysis of the Semicon Industry
+# CPU💻 Vs 🎮GPU - Exploratory Data Analysis of the Semiconductor Industry
 ## 💡Abstract 
 This project presents an in-depth exploratory data analysis (EDA) of a dataset comprising 2,185 CPUs and 2,668 GPUs to examine the trends and advancements in semiconductor technology. The dataset present in this Analysis has information about releases of CPU and GPU from to the year 2000 to 2021, including, but not limited to, its release date, frequency, Vendor, commercial name, TDP, etc. 
 
@@ -49,7 +49,7 @@ Other research, like those by Jouppi et al. (2017), highlight how important GPUs
 With an emphasis on trends and performance measures, this project compares and analyses CPUs and GPUs using standard methodology. As shown below, the methodology consists of data loading, preprocessing, cleaning, exploratory data analysis (EDA), and visualisation. 
 
 ➢ **Data Loading** - Reputable public datasets and product specifications provided the data on different CPUs and GPUs, including characteristics like clock frequency, transistor count, process size, and year of introduction. Because the data is placed into a structured format, analysis and manipulation can be done quickly. Our Dataset is known as “CPU and GPU Performances Dataset”, which is publicly available on Kaggle.com website.  
-Here are some interesting facts supported by the data, which we will verify based on our insights- 
+
 ```python
 import re #The re library provides regular expression operations to search, match, and manipulate text patterns
 import numpy as np #numpy is a fundamental package for numerical computation, enabling efficient handling of arrays and matrices and performing mathematical operations on large datasets
@@ -99,7 +99,7 @@ Data columns (total 13 columns):
 dtypes: float64(8), object(5)
 memory usage: 436.1+ KB
 ```
-
+Here are some interesting facts supported by the data, which we will verify based on our insights- 
 - Moore's Law still holds, especially in GPUs. 
 - Dannard Scaling is still valid in general. 
 - CPUs have higher frequencies, but GPUs are catching up. 
@@ -309,9 +309,9 @@ number of transistors, as the years progress.
 
 - A larger die size, which physically holds the transistors, provides more surface area, allowing for an increased number of transistors, leading to enhanced 
 frequency performance in both CPUs and GPUs. Our analysis indicates that advancements in these processors are influenced by a combination of larger die sizes, higher transistor counts, and increased frequencies. This trend is more prominent in GPUs than in CPUs over time. 
-- In terms of Foundries, GF have very recently emerged in the market and In the past few years, it has scaled up its Frequency Values close to the level of Intel And TSMC. Although TSMC was present for many years, its frequency values have very recently increased.
-- For Moore's Law to be upheld, there must be: Negative correlation between Process Size and Time Positive correlation between Transistors and Time. This is verified by our data, hence Moore’s law is upheld.
-- Despite of the GPU having higher average values for processor size, TDP, die size and transistors, its average frequency is lower than the average CPU frequency.
+- In terms of Foundries, **GF have very recently emerged in the market and In the past few years,** it has scaled up its Frequency Values close to the level of Intel And TSMC. Although TSMC was present for many years, its frequency values have very recently increased.
+- For Moore's Law to be upheld, there must be: **Negative correlation between Process Size and Time Positive correlation between Transistors and Time.** This is verified by our data, hence Moore’s law is upheld.
+- Despite of the GPU having higher average values for processor size, TDP, die size and transistors, **its average frequency is lower than the average CPU frequency.**
 
 ![image](https://github.com/user-attachments/assets/5df2f150-ec0f-475a-a3d6-582a3d8fdb1e)
 
@@ -319,10 +319,10 @@ frequency performance in both CPUs and GPUs. Our analysis indicates that advance
 
 ## 🌐Future Scope
 There are various ways to broaden the examination of CPUs and GPUs:
-- Machine Learning and AI-Specific Processors: To evaluate the wider ecosystem of specialised computing hardware, future research could compare with AI-specific processors such as TPUs (Tensor Processing Units) and NPUs (Neural Processing Units).
-- Performance vs. Power Efficiency: Future studies should examine the trade-offs between performance and power consumption across CPUs and GPUs, especially for data centres and edge computing applications, as sustainability and energy efficiency become increasingly important factors.
-- Impact of Emerging Technologies: A comparative study that considers the emergence of quantum computing and neuromorphic computing may shed light on the areas in which conventional CPUs and GPUs will remain dominant and those in which they might lose ground.
-- Real-Time Applications Analysis: Future studies could examine which processor type operates best under circumstances and limitations by examining the distinct roles that CPUs and GPUs play in real-time applications (such as augmented reality and autonomous driving).
+- **Machine Learning and AI-Specific Processors:** To evaluate the wider ecosystem of specialised computing hardware, future research could compare with AI-specific processors such as TPUs (Tensor Processing Units) and NPUs (Neural Processing Units).
+- **Performance vs. Power Efficiency:** Future studies should examine the trade-offs between performance and power consumption across CPUs and GPUs, especially for data centres and edge computing applications, as sustainability and energy efficiency become increasingly important factors.
+- **Impact of Emerging Technologies:** A comparative study that considers the emergence of quantum computing and neuromorphic computing may shed light on the areas in which conventional CPUs and GPUs will remain dominant and those in which they might lose ground.
+- **Real-Time Applications Analysis:** Future studies could examine which processor type operates best under circumstances and limitations by examining the distinct roles that CPUs and GPUs play in real-time applications (such as augmented reality and autonomous driving).
 
 ## 📚References 
 
